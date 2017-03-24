@@ -1,13 +1,29 @@
-FLAGS = -Wall -std=gnu99 -g
-DEPENDENCIES = hash.h ftree.h
+### THIS IS JUST A TEMPLATE: HAVE TO CREATE YOUR OWN MAKEFILE for this assignment
 
-all: fcopy
+# This illustrates how you can set the value of a defined constant 
+# on the compile line.
+PORT=30001
+CFLAGS = -DPORT=$(PORT) -g -Wall -std=gnu99
 
-fcopy: fcopy.o ftree.o hash_functions.o
-	gcc ${FLAGS} -o $@ $^
+all: inetserver inetclient 
 
-%.o: %.c ${DEPENDENCIES}
-	gcc ${FLAGS} -c $<
+# The variable $@ has the value of the target. 
+inetserver: inetserver.o
+	gcc ${CFLAGS} -o $@ inetserver.o  
 
-clean: 
-	rm *.o fcopy
+inetclient: inetclient.o
+	gcc ${CFLAGS} -o $@ inetclient.o 
+
+forkserver: forkserver.o
+	gcc ${CFLAGS} -o $@ forkserver.o 
+simpleselect: simpleselect.o 
+	gcc ${CFLAGS} -o $@ simpleselect.o 
+
+.c.o:
+	gcc  ${CFLAGS}  -c $<
+
+clean:
+	rm *.o 
+
+realclean:
+	rm inetserver inetclient forkserver 

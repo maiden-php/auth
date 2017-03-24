@@ -1,22 +1,40 @@
 #ifndef _FTREE_H_
 #define _FTREE_H_
 
-/* Function for copying a file tree rooted at src to dest
- * Returns < 0 on error. The magnitude of the return value
- * is the number of processes involved in the copy and is
- * at least 1.
- */
-int copy_ftree(const char *src, const char *dest);
+#include "hash.h"
 
-/* Recursively copy the source directory contents into the
- * destination directory creating child processes for each
- * sub directory.
- * Returns the number of processes used in the copy.
- */
-int copy_directory(const char *src, const char *dest);
+#define MAXPATH 128
+#define MAXDATA 256
 
-/* Copies a file from source to destination.
-*/
-int copy_file(const char* src, const char* dest, mode_t permissions);
+// Input states
+#define AWAITING_TYPE 0
+#define AWAITING_PATH 1
+#define AWAITING_SIZE 2
+#define AWAITING_PERM 3
+#define AWAITING_HASH 4
+#define AWAITING_DATA 5
+
+// Request types
+#define REGFILE 1
+#define REGDIR 2
+#define TRANSFILE 3
+
+#define OK 0
+#define SENDFILE 1
+
+#ifndef PORT
+    #define PORT 30100
+#endif
+
+struct request {
+    int type;           // Request type is REGFILE, REGDIR, TRANSFILE
+    char path[MAXPATH];
+    mode_t mode;
+    char hash[BLOCKSIZE];
+    int size;
+};
+
+int rcopy_client(char *source, char *host, unsigned short port);
+void rcopy_server(unsigned short port);
 
 #endif // _FTREE_H_
