@@ -1,9 +1,13 @@
+FLAGS = -Wall -std=gnu99 -g
+DEPENDENCIES = hash.h ftree.h
 
-all : validate checkpasswd
+all: fcopy
 
-validate : validate.c
-	gcc -Wall -g -o validate validate.c
+fcopy: fcopy.o ftree.o hash_functions.o
+	gcc ${FLAGS} -o $@ $^
 
-checkpasswd : checkpasswd.c
-	gcc -Wall -g -o checkpasswd checkpasswd.c
+%.o: %.c ${DEPENDENCIES}
+	gcc ${FLAGS} -c $<
 
+clean: 
+	rm *.o fcopy
