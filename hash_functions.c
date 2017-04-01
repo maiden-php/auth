@@ -29,3 +29,27 @@ int check_hash(const char *hash1, const char *hash2) {
     }
     return 0;
 }
+
+// Tries to compute the hash for a file with the file name passed into the function.
+// Returns hash if successful or NULL otherwise.
+char *hash_file_name(char *hash_val, const char *file_name)
+{
+    FILE *f;
+    char *res;
+    
+    // Open file for hashing.
+    if ((f = fopen(file_name, "rb")) == NULL)
+    {
+        perror("Error opening file");
+        return NULL;
+    }
+
+    // Retrieve hash from file.
+    res = hash(hash_val, f);
+
+    // Close file.
+    fclose(f);
+
+    return res;
+}
+
