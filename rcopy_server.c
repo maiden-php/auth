@@ -55,10 +55,10 @@ int main(int argc, char **argv) {
     chdir(path);
 
     // remove write and access perissions for sandbox
-    if(chmod("..", 0400) == -1) {
-        perror("chmod");
-        exit(1);
-    }
+    //if(chmod("..", 0400) == -1) {
+    //    perror("chmod");
+    //    exit(1);
+    //}
     
     /* IMPORTANT: All path operations in rcopy_server must be relative to
      * the current working directory.

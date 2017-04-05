@@ -2,7 +2,7 @@
 
 # This illustrates how you can set the value of a defined constant 
 # on the compile line.
-PORT=30001
+PORT=55231
 CFLAGS = -DPORT=$(PORT) -g -Wall -std=gnu99
 
 all: rcopy_client rcopy_server
