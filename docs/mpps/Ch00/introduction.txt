@@ -1,0 +1,1 @@
+Chrome > settings > system > continue running background apps when Google Chrome is closed

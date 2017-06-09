@@ -1,0 +1,22 @@
+if (isset($_POST['login'])) {
+    $username = trim($_POST['username']);
+    $pwd = trim($_POST['pwd']);
+    $stmt = $db->prepare('SELECT pwd FROM users WHERE username = :username');
+    $stmt->bindParam(':username', $username);
+    $stmt->execute();
+    $stored = $stmt->fetchColumn();
+    if (password_verify($pwd, $stored)) {
+        session_regenerate_id(true);
+        $_SESSION['username'] = $username;
+        $_SESSION['authenticated'] = true;
+        if (isset($_POST['remember'])) {
+            // create persistent login
+            $autologin = new AutoLogin($db);
+            $autologin->persistentLogin();
+        }
+        header('Location: restricted1.php');
+        exit;
+    } else {
+        $error = 'Login failed. Check username and password.';
+    }
+}

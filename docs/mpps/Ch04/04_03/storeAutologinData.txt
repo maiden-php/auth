@@ -1,0 +1,24 @@
+/**
+ * Copies the user's session data to the autologin table
+ *
+ * @param string $data Session data
+ */
+protected function storeAutologinData($data)
+{
+    // Get the user key if it's not already stored as a session variable
+    if (!isset($_SESSION[$this->sess_ukey])) {
+        $sql = "SELECT $this->col_ukey FROM $this->table_users
+                WHERE $this->col_name = :username";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':username', $_SESSION[$this->sess_uname]);
+        $stmt->execute();
+        $_SESSION[$this->sess_ukey] = $stmt->fetchColumn();
+    }
+    // Copy the session data to the autologin table
+    $sql = "UPDATE $this->table_autologin
+            SET $this->col_data = :data WHERE $this->col_ukey = :key";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bindParam(':data', $data);
+    $stmt->bindParam(':key', $_SESSION[$this->sess_ukey]);
+    $stmt->execute();
+}

@@ -1,0 +1,12 @@
+$sql = "DELETE FROM $this->table_sess WHERE $this->col_sid = :sid";
+try {
+    $stmt = $this->db->prepare($sql);
+    $stmt->bindParam(':sid', $session_id);
+    $stmt->execute();
+} catch (\PDOException $e) {
+    if ($this->db->inTransaction()) {
+        $this->db->rollBack();
+    }
+    throw $e;
+}
+return true;

@@ -1,0 +1,23 @@
+; .user.ini files use the same syntax as php.ini
+
+session.auto_start = 0
+session.use_cookies = 1
+session.use_only_cookies = 1
+session.use_trans_sid = 0
+session.cache_limiter = nocache
+
+; Comment out the following line for PHP < 5.5.2
+session.use_strict_mode = 1
+
+session.name = LyndaSession
+
+; Cookie settings
+session.cookie_domain = ''
+session.cookie_path = '/persistent'
+session.cookie_lifetime = 0
+session.cookie_httponly = 1
+session.cookie_secure = 0
+
+session.gc_maxlifetime = 1440
+session.gc_probability = 1
+session.gc_divisor = 100

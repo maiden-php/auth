@@ -1,0 +1,19 @@
+try {
+    $sql = "INSERT INTO $this->table_sess ($this->col_sid,
+            $this->col_expiry, $this->col_data)
+            VALUES (:sid, :expiry, :data)
+            ON DUPLICATE KEY UPDATE
+            $this->col_expiry = :expiry,
+            $this->col_data = :data";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bindParam(':expiry', $this->expiry, \PDO::PARAM_INT);
+    $stmt->bindParam(':data', $data);
+    $stmt->bindParam(':sid', $session_id);
+    $stmt->execute();
+    return true;
+} catch (\PDOException $e) {
+    if ($this->db->inTransaction()) {
+        $this->db->rollback();
+    }
+    throw $e;
+}
